@@ -5,7 +5,7 @@ const userSchema = new Schema({
     userName : {
         type : String,
         required : true,
-        min :3,
+        min :3, 
         max:30
     },
     email : {
@@ -44,6 +44,9 @@ const userSchema = new Schema({
     isverified : {
         type : Boolean,
         default : false
+    },
+    otp:{
+        type : String
     }
 },{
     timestamps : true

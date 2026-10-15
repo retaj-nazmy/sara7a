@@ -30,6 +30,7 @@ export const generateToken = async (user) => {
   return { accessToken, refreshToken };
 };
 
+
 export const generateNewAccessToken = async (refreshToken) => {
     let data = jwt.decode(refreshToken)
   let signature;

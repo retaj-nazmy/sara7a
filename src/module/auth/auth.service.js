@@ -3,6 +3,7 @@ import { BadRequestException, ConflictException, NotFoundException } from "../..
 import { compareHash, generateHash } from "../../common/index.js";
 import { userModel } from "../../database/model/user.model.js";
 import { generateNewAccessToken, generateToken } from "../../common/services/token.service.js";
+import { sendEmail } from "../../common/middleware/sendEmail.js";
 
 
 export const signup = async (data)=>{
@@ -18,7 +19,9 @@ export const signup = async (data)=>{
         if(!hashedPassword){
             return BadRequestException({message : "password is not hashed"})
         }else{
-            let user = await userModel.create({userName , email , password: hashedPassword,age, gender})
+            let otp = Math.round(Math.random() * 1000000)
+            let user = await userModel.create({userName , email , password: hashedPassword,age, gender,otp})
+           await sendEmail({to:email, subject:"sign up", html:`<h1>your otp is ${otp}</h1>`})
             return user
         }
      }
@@ -30,6 +33,9 @@ export const signin = async(data)=>{
     let userData = await userModel.findOne({email})
     if(!userData){
         return NotFoundException({message : "user not found"})
+    }
+    if(!userData.isverified){
+        throw BadRequestException({message: "user not verified"})
     }
 
     let isMatched = await compareHash({plainText : password , hashedData : userData.password})
@@ -60,3 +66,25 @@ export const generateAccessToken = async(data)=>{
     }
 }
 
+export const verifyAccount = async(body)=>{
+    let {otp , email} = body
+    let userData = await userModel.findOne({email})
+    if(!userData){
+        throw NotFoundException({message: 'user not found'})
+    }
+    if(userData.isverified){
+        throw BadRequestException({message: 'user already verified'})
+    }
+    if (userData.otp != otp) {
+        throw BadRequestException({message : "otp does not match"})
+    }
+    userData.isverified = true
+    userData.otp = null
+    await userData.save()
+    return userData
+}
+
+export const getAllUsers = async()=>{
+    let usersData = await userModel.find()
+    return usersData
+}
