@@ -4,10 +4,11 @@ import { auth } from "../../common/middleware/auth.middleware.js";
 import { validation } from "../../common/services/validation.service.js";
 import { userLoginSchema } from "./auth.validation.js";
 import { checkRole } from "../../common/middleware/checkRole.js";
+import { upload } from "../../common/middleware/multer.js";
 const router = Router()
 
-router.post('/signup' ,async (req,res)=>{
-    let data = await signup(req.body);
+router.post('/signup' ,upload().single('image'),async (req,res)=>{
+    let data = await signup(req.body, req.file);
     res.json(data)
 })
 
