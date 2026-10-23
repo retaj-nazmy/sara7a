@@ -13,6 +13,7 @@ const accessAdminSignature = process.env.ACCESS_ADMIN_SIGNATURE
 const refreshAdminSignature = process.env.REFRESH_ADMIN_SIGNATURE
 const emailUser = process.env.EMAIL
 const appPassword = process.env.APP_PASSWORD
+const redisURL= process.env.REDIS_URL
 
 export const env ={
     port,
@@ -24,5 +25,6 @@ export const env ={
     accessAdminSignature,
     refreshAdminSignature,
     emailUser,
-    appPassword
+    appPassword,
+    redisURL
 }
