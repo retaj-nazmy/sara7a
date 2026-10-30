@@ -2,6 +2,7 @@ import express, { json } from "express";
 import { env } from "./config/env.service.js";
 import { databaseConnection } from "./database/connection.js";
 import authRouter from "./module/auth/auth.controller.js";
+import messageRouter from './module/message/message.controller.js'
 import { globalHandlingError } from "./common/index.js";
 import {fileURLToPath} from 'url'
 import path from "path";
@@ -23,6 +24,7 @@ app.use('/uploads', express.static(filePath));
 
 
 app.use("/auth", authRouter);
+app.use("/messages", messageRouter);
 
 app.use(globalHandlingError);
 

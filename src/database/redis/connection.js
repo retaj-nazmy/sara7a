@@ -1,4 +1,4 @@
-import { createClient, RESP_TYPES } from "redis"
+import { createClient } from "redis"
 import { env } from "../../config/env.service.js";
 
 export const redisConnection = async()=>{

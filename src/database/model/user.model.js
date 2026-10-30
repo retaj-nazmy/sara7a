@@ -1,5 +1,6 @@
 import { model, Schema } from "mongoose";
 import { GenderEnum, providerEnum, RoleEnum } from "../../common/index.js";
+import { required } from "zod/mini";
 
 const userSchema = new Schema({
     userName : {
@@ -44,6 +45,11 @@ const userSchema = new Schema({
     isverified : {
         type : Boolean,
         default : false
+    },
+    uniqueName:{
+        type:String,
+        required : true,
+        unique: true
     }
 },{
     timestamps : true

@@ -14,7 +14,7 @@ import { sendEmail } from "../../common/middleware/sendEmail.js";
 import { get, set } from "../../database/redis/redis.service.js";
 
 export const signup = async (data, file) => {
-  let { userName, email, password, confirmPassword, age, gender } = data;
+  let { userName, email, password, confirmPassword, age, gender,uniqueName } = data;
   let profileImage;
   if (confirmPassword !== password) {
     return BadRequestException({
@@ -25,6 +25,10 @@ export const signup = async (data, file) => {
   if (existedEmail) {
     return ConflictException({ message: "Email already exist" });
   } else {
+    let userData = await userModel.findOne({uniqueName})
+    if (userData) {
+       return ConflictException({ message: "uniqueName already exist" });
+    }
     let hashedPassword = await generateHash({ plainText: password });
     if (!hashedPassword) {
       return BadRequestException({ message: "password is not hashed" });
@@ -40,6 +44,7 @@ export const signup = async (data, file) => {
         age,
         gender,
         profileImage,
+        uniqueName
       });
       set(`otp::${user._id}`, otp, 180);
 
