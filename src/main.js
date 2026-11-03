@@ -28,6 +28,9 @@ app.use("/messages", messageRouter);
 
 app.use(globalHandlingError);
 
+app.get("/", (req, res) => {
+  res.json({ message: "Hello, from sara7a!" });
+});
 app.listen(env.port, () => {
   console.log(`Server is running on port ${env.port} in ${env.mood} mode`);
 });
