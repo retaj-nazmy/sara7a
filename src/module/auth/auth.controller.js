@@ -5,6 +5,7 @@ import { validation } from "../../common/services/validation.service.js";
 import { userLoginSchema } from "./auth.validation.js";
 import { checkRole } from "../../common/middleware/checkRole.js";
 import { upload } from "../../common/middleware/multer.js";
+import { RoleEnum } from "../../common/index.js";
 const router = Router()
 
 router.post('/signup' ,upload().single('image'),async (req,res)=>{

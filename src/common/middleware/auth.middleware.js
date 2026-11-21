@@ -3,13 +3,13 @@ import { env } from "../../config/env.service.js";
 import { BadRequestException } from "../exceptions/error.exception.js";
 
 export const auth = (req, res, next) => {
+
+  if (!req.headers.authorization) {
+    throw BadRequestException({ message: "authorization header is required" });
+  }
+
   let [flag, token] = req.headers.authorization.split(" ");
   switch (flag) {
-    case "Basic":
-      const basicData = Buffer.from(token, "base64").toString();
-      console.log(basicData);
-
-      break;
 
     case "Bearer":
       let decodedToken = jwt.decode(token);
@@ -18,8 +18,11 @@ export const auth = (req, res, next) => {
         case "admin":
           signature = env.accessAdminSignature;
           break;
+
         case "user":
           signature = env.accessUserSignature;
+          break;
+
         default:
           break;
       }

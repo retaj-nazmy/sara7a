@@ -6,14 +6,24 @@ const messageSchema = Schema(
       type: String,
       required: true,
     },
-    recieverId: {
+    receiverId: {
       type: Types.ObjectId,
+      ref: "user",
+      required: true,
+    },
+    senderId: {
+      type: Types.ObjectId,
+      ref: "user",
       required: true,
     },
     image: {
       type: String,
       required: false,
     },
+    isAnonymous: {
+      type: Boolean,
+      default: true,
+    }
   },
   {
     timestamps: true,

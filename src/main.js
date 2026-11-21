@@ -3,6 +3,8 @@ import { env } from "./config/env.service.js";
 import { databaseConnection } from "./database/connection.js";
 import authRouter from "./module/auth/auth.controller.js";
 import messageRouter from './module/message/message.controller.js'
+import requestRouter from './module/request/request.controller.js'
+import conversationRouter from './module/conversation/conversation.controller.js'
 import { globalHandlingError } from "./common/index.js";
 import {fileURLToPath} from 'url'
 import path from "path";
@@ -25,7 +27,8 @@ app.use('/uploads', express.static(filePath));
 
 app.use("/auth", authRouter);
 app.use("/messages", messageRouter);
-
+app.use("/requests", requestRouter);
+app.use("/conversations", conversationRouter);
 app.use(globalHandlingError);
 
 app.get("/", (req, res) => {

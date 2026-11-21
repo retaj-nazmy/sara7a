@@ -12,15 +12,18 @@ router.get('/get-all-messages', auth,checkRole(['1']),async(req,res)=>{
     successResponse({res, data})
 })
 
-router.post('/send-message', upload().single('image'),async(req,res)=>{
-    let data = await sendMessage(req.body,req.file)
+
+router.post('/send-message',auth, upload().single('image'),async(req,res)=>{
+    let data = await sendMessage(req.body,req.file,req.user)
     successResponse({res,data})
 })
+
 
 router.get('/user-url',auth,async(req,res)=>{
       let data = await getUserURL(req.user)
     successResponse({res,data})  
 })
+
 
 router.get('/user',async(req,res)=>{
       let data = await getUserData(req.body)
